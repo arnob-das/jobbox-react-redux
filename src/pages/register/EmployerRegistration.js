@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa";
+import { useRegisterMutation } from "../../features/auth/authApi";
+import { useSelector } from "react-redux";
 
 const EmployerRegistration = () => {
   const [countries, setCountries] = useState([]);
@@ -9,6 +11,10 @@ const EmployerRegistration = () => {
   const { handleSubmit, register, control } = useForm();
   const term = useWatch({ control, name: "term" });
   const navigate = useNavigate();
+
+  const [postUser, {isLoading,isError}] = useRegisterMutation();
+
+  const {email,isSuccess} = useSelector((state) => state.auth);
 
   const businessCategory = [
     "Automotive",
@@ -41,6 +47,7 @@ const EmployerRegistration = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    postUser({...data,role:"employeer",email:email})
   };
 
   return (
@@ -74,7 +81,7 @@ const EmployerRegistration = () => {
             <label className='mb-2' htmlFor='email'>
               Email
             </label>
-            <input type='email' id='email' disabled {...register("email")} />
+            <input type='email' value={email} id='email' contentEditable={false}  {...register("email")} />
           </div>
           <div className='flex flex-col w-full max-w-xs'>
             <h1 className='mb-3'>Gender</h1>
