@@ -3,13 +3,25 @@ import { useForm } from "react-hook-form";
 
 import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/login.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../features/auth/authSlice";
+
 const Login = () => {
+  const { isLoading, email } = useSelector(state => state.auth);
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onSubmit = (data) => {
     console.log(data);
+    dispatch(loginUser({ email: data.email, password: data.password }));
   };
+
+  useEffect(() => {
+    if (!isLoading && email) {
+      navigate("/")
+    }
+  }, [isLoading, email])
 
   return (
     <div className='flex h-screen items-center'>
