@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
+import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import auth from "../../firebase/firebase.config"
 import Login from '../../pages/Login'
 
@@ -25,6 +25,14 @@ export const loginUser = createAsyncThunk("auth/loginUser",
         return data.user.email;
     })
 
+// sign in with google account
+export const googleLoginUser = createAsyncThunk("auth/googleLogin",
+    async () => {
+        const googleProvider = new GoogleAuthProvider();
+        const data = await signInWithPopup(auth, googleProvider)
+        return data.user.email;
+    })
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -34,6 +42,9 @@ export const authSlice = createSlice({
         },
         setUser: (state, { payload }) => {
             state.email = payload;
+            state.isLoading = false;
+        },
+        toggleLoading: (state) => {
             state.isLoading = false;
         }
     },
@@ -76,10 +87,29 @@ export const authSlice = createSlice({
                 state.error = action.error.message;
                 state.email = "";
             })
+            //google login
+            .addCase(googleLoginUser.pending, (state, action) => {
+                state.isLoading = true;
+                state.isError = false;
+                state.error = "";
+                state.email = "";
+            })
+            .addCase(googleLoginUser.fulfilled, (state, { payload }) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.error = "";
+                state.email = payload;
+            })
+            .addCase(googleLoginUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.error = action.error.message;
+                state.email = "";
+            })
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { logout, setUser } = authSlice.actions
+export const { logout, setUser,toggleLoading } = authSlice.actions
 
 export default authSlice.reducer
