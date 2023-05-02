@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const PrivateRoute = ({ children }) => {
   const { pathname } = useLocation();
 
-  const { isLoading, email } = useSelector(state => state.auth);
+  const { isLoading, user: { email } } = useSelector(state => state.auth);
 
   if (isLoading) {
     return <Loading />;
