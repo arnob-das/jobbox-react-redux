@@ -30,6 +30,7 @@ export const loginUser = createAsyncThunk("auth/loginUser",
 export const googleLoginUser = createAsyncThunk("auth/googleLogin",
     async () => {
         const googleProvider = new GoogleAuthProvider();
+        // await is must here
         const data = await signInWithPopup(auth, googleProvider)
         return data.user.email;
     })
