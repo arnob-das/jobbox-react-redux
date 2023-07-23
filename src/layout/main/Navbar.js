@@ -33,19 +33,19 @@ const Navbar = () => {
         </li>
 
         {
-          (email && role) &&
+          (email && !role) &&
           <li>
-            <Link className='hover:text-primary' to='/dashboard'>
-              Dashboard
+            <Link className='hover:text-primary' to='/register'>
+              Get Started
             </Link>
           </li>
         }
 
         {
-          (email && !role) &&
+          (email && role) &&
           <li>
-            <Link className='hover:text-primary' to='/register'>
-              Get Started
+            <Link className='hover:text-primary' to='/dashboard'>
+              Dashboard
             </Link>
           </li>
         }

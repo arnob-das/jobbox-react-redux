@@ -83,9 +83,9 @@ const JobDetails = () => {
 
 
 
-  return (
-    <div className='pt-14 grid grid-cols-12 gap-5'>
-      <div className='col-span-9 mb-10'>
+  return (  
+    <div className='pt-14 flex-none lg:flex lg:flex-col'>
+      <div className='w-full lg:w-9/12 mb-10'>
         <div className='h-80 rounded-xl overflow-hidden'>
           <img className='h-full w-full object-cover' src={meeting} alt='' />
         </div>
@@ -194,7 +194,7 @@ const JobDetails = () => {
           </div>
         </div>
       </div>
-      <div className='col-span-3'>
+      <div className='w-full lg:w-3/12'>
         <div className='rounded-xl bg-primary/10 p-5 text-primary space-y-5'>
           <div>
             <p>Experience</p>
